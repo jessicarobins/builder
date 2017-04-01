@@ -7,7 +7,7 @@ const components = (
 ) => {
   switch (action.type) {
     case actions.ADD_COMPONENT :
-      return [action.components, ...state];
+      return [action.component, ...state];
     default:
       return state;
   }

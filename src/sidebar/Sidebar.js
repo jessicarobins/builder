@@ -5,43 +5,39 @@ import * as components from '../components';
 
 class Sidebar extends Component {
   
-  constructor(props) {
-    super(props);
-
-    this.state = { 
-      buttonText: 'default'
-    };
-  }
-  
   fields(component) {
     return _.map(component.expectedProps, (p, key) => {
       return (
-        <label key={key}>
-          {key}
-          <input type="text" value={this.state[key]} onChange={(event) => this.handleChange(event, key)} />
-        </label>
+        <div>
+          <label key={key}>
+            {key}
+            <input
+              type="text"
+              ref="text" />
+          </label>
+          <button onClick={() => this.onAddComponentClick(component.name)}>Add</button>
+        </div>
       )
     })
   }
   
-  button() {
-    return (
-      <div>
-        <components.Button text={this.state.text} />
-        {
-          _.map(components, c => this.fields(c))
-        }
-      </div>
-    )
-  }
-  
-  handleChange(event, key) {
-    this.setState({[key]: event.target.value});
+  onAddComponentClick(key) {
+    this.props.addComponent({
+      componentName: key,
+      text: this.refs.text.value,
+      _id: Math.random()
+    })
+    
+    this.refs.text.value = ''
   }
   
   render() {
     return (
-      <div>{this.button()}</div>
+      <div>
+        {
+          _.map(components, c => this.fields(c))
+        }
+      </div>
     );
   }
 }

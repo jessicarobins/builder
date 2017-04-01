@@ -14,10 +14,10 @@ class App extends Component {
     return (
       <div className="columns">
         <div className="column is-one-quarter">
-          <Sidebar />
+          <Sidebar addComponent={this.props.actions.addComponent} />
         </div>
         <div className="column">
-          <Preview components={this.props.components}/>
+          <Preview components={this.props.components} />
         </div>
       </div>
     );

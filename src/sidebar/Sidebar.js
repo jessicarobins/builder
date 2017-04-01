@@ -5,38 +5,73 @@ import * as components from '../components';
 
 class Sidebar extends Component {
   
-  fields(component) {
-    return _.map(component.expectedProps, (p, key) => {
+  constructor(props) {
+    super(props)
+    this.state = {
+      selected: null
+    }
+  }
+  
+  fields() {
+    return (
+      <div>
+        {
+          _.map(this.state.selected.expectedProps, (p, key) => {
+            return (
+              <div key={key}>
+                <label>
+                  {key}
+                  <input
+                    type="text"
+                    ref={key} />
+                </label>
+              </div>
+            )
+          })
+        }
+        <button onClick={() => this.onAddComponentClick(this.state.selected.name)}>Add</button>
+      </div>
+    )
+  }
+  
+  componentNames() {
+    return _.map(components, c => {
       return (
-        <div>
-          <label key={key}>
-            {key}
-            <input
-              type="text"
-              ref="text" />
-          </label>
-          <button onClick={() => this.onAddComponentClick(component.name)}>Add</button>
+        <div key={c.name}>
+          <a onClick={() => this.setSelectedComponent(c)}>{c.name}</a>
         </div>
       )
     })
   }
   
+  setSelectedComponent(c) {
+    this.setState({selected: c})
+  }
+  
   onAddComponentClick(key) {
-    this.props.addComponent({
+    let props = {
       componentName: key,
-      text: this.refs.text.value,
       _id: Math.random()
+    }
+    
+    let refs = _.map(this.refs, (value, key) => {
+      console.log('value: ', value)
+      console.log('key: ', key)
+      return {[key]: value.value}
     })
     
-    this.refs.text.value = ''
+    _.assign(props, ...refs)
+    
+    this.props.addComponent(props)
+    
+    _.each(this.refs, r => r.value = '')
   }
   
   render() {
     return (
       <div>
-        {
-          _.map(components, c => this.fields(c))
-        }
+        {this.componentNames()}
+        {this.state.selected && this.fields()}
       </div>
     );
   }

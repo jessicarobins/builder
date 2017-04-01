@@ -13,8 +13,8 @@ class Sidebar extends Component {
     };
   }
   
-  fields() {
-    return _.map(components.Button.expectedProps, (p, key) => {
+  fields(component) {
+    return _.map(component.expectedProps, (p, key) => {
       return (
         <label key={key}>
           {key}
@@ -28,12 +28,14 @@ class Sidebar extends Component {
     return (
       <div>
         <components.Button text={this.state.text} />
-        {this.fields()}
+        {
+          _.map(components, c => this.fields(c))
+        }
       </div>
     )
   }
   
-  handleChange = (event, key) => {
+  handleChange(event, key) {
     this.setState({[key]: event.target.value});
   }
   

@@ -1,29 +1,15 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import './App.css';
-import * as components from './components';
 import Sidebar from './sidebar/Sidebar';
-import * as _ from 'lodash';
+import Preview from './preview/Preview'
+
+import { getComponents } from './reducers/ComponentReducer'
+import * as componentActions from './actions/ComponentActions'
 
 class App extends Component {
-  
-  constructor(props) {
-    super(props);
-    const data = [{
-        componentName: 'Button',
-        text: 'hi',
-        _id: '1'
-      }, {
-        componentName: 'Button',
-        text: 'jess',
-        _id: '2'
-      }
-    ]
-    this.state = { 
-      data: data
-    };
-  }
-  
   render() {
     return (
       <div className="columns">
@@ -31,23 +17,23 @@ class App extends Component {
           <Sidebar />
         </div>
         <div className="column">
-          <div className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h2>Welcome to React</h2>
-          </div>
-          <p className="App-intro">
-            To get started, edit <code>src/App.js</code> and save to reload.
-          </p>
-          {
-            this.state.data.map( (value) => {
-              const Comp = components[value.componentName]
-              return <Comp key={value._id} {...value} />
-            })
-          }
+          <Preview components={this.props.components}/>
         </div>
       </div>
     );
   }
 }
 
-export default App;
+function mapStateToProps(state, props) {
+  return {
+    components: getComponents(state)
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(componentActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

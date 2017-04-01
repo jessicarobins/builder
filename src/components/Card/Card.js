@@ -38,9 +38,15 @@ Card.propTypes = {
 };
 
 Card.expectedProps = {
-  content: 'string',
-  title: 'string',
-  subtitle: 'string'
+  content: {
+    type: 'string'
+  },
+  title: {
+    type: 'string'
+  },
+  subtitle: {
+    type: 'string'
+  }
 }
 
 export default Card;

@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import * as components from '../components';
+import Row from '../Row/Row'
 
 class Preview extends Component {
   render() {
     return (
       <div>
         {
-          this.props.components.map( (value) => {
-            const Comp = components[value.componentName]
-            return <Comp key={value._id} {...value} />
+          this.props.rows.map( (row) => {
+            return <Row key={row._id} row={row} />
           })
         }
       </div>

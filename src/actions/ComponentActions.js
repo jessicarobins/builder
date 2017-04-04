@@ -13,3 +13,10 @@ export const selectComponent = (component) => {
     component
   };
 }
+
+export const updateComponent = (component) => {
+  return {
+    type: types.UPDATE_COMPONENT,
+    component
+  };
+}

@@ -12,40 +12,58 @@ class Sidebar extends Component {
     }
   }
   
-  fields() {
+  fields(c) {
     return (
-      <form name="createForm" onSubmit={this.onAddComponentClick}>
-        {
-          _.map(this.state.selected.expectedProps, (obj, key) => {
-            return (
-              <div key={key} className="field">
-                <p className="control">
-                  { obj.type === 'string' &&
-                    <label>
-                      {key}
-                      <input
-                        type="text"
-                        name={key}
-                        ref={key} />
+      _.map(c.expectedProps, (obj, key) => {
+        return (
+          <div key={key} className="field">
+            <p className="control">
+              { obj.type === 'string' &&
+                <label>
+                  {key}
+                  <input
+                    type="text"
+                    name={key}
+                    ref={key} />
+                </label>
+              }
+              {
+                obj.type === 'radio' &&
+                obj.options.map( o => {
+                  return (
+                    <label className="radio" key={o.value}>
+                      <input type="radio" name={key} value={o.value} />
+                      {o.label}
                     </label>
-                  }
-                  {
-                    obj.type === 'radio' &&
-                    obj.options.map( o => {
-                      return (
-                        <label className="radio" key={o.value}>
-                          <input type="radio" name={key} value={o.value} />
-                          {o.label}
-                        </label>
-                      )
-                    })
-                  }
-                </p>
-              </div>
-            )
-          })
+                  )
+                })
+              }
+            </p>
+          </div>
+        )
+      })
+    )
+  }
+  
+  createForm() {
+    return (
+      <form onSubmit={this.onAddComponentClick}>
+        {
+          this.fields(this.state.selected)
         }
         <button type="submit">Add</button>
+      </form>
+    )
+  }
+  
+  updateForm() {
+    const c = components[this.props.selectedComponent.componentName]
+    return (
+      <form onSubmit={this.onUpdateComponentClick}>
+        {
+          this.fields(c)
+        }
+        <button type="submit">Update</button>
       </form>
     )
   }
@@ -79,10 +97,6 @@ class Sidebar extends Component {
       return {[key]: elems[key].value}
     })
     
-    // const refs = _.map(this.refs, (value, key) => {
-    //   return {[key]: value.value}
-    // })
-    
     _.assign(props, ...refs)
     
     this.props.addComponent(props)
@@ -90,11 +104,28 @@ class Sidebar extends Component {
     _.each(this.refs, r => r.value = '')
   }
   
+  onUpdateComponentClick = (e) => {
+    e.preventDefault()
+    
+    const elems = e.target.elements
+    const c = components[this.props.selectedComponent.componentName]
+    
+    const refs = _.map(c.expectedProps, (value, key) => {
+      return {[key]: elems[key].value}
+    })
+    
+    let props = {_id: this.props.selectedComponent._id, componentName: this.props.selectedComponent.componentName}
+    _.assign(props, ...refs)
+    
+    this.props.updateComponent(props)
+  }
+  
   render() {
     return (
       <div>
         {this.componentNames()}
-        {this.state.selected && this.fields()}
+        {this.state.selected && this.createForm()}
+        {this.props.selectedComponent && this.updateForm()}
       </div>
     );
   }

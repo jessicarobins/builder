@@ -8,6 +8,13 @@ const components = (
   switch (action.type) {
     case actions.ADD_COMPONENT :
       return [action.component, ...state];
+    case actions.UPDATE_COMPONENT :
+      return state.map( item => {
+        if(item._id !== action.component._id) {
+            return item;
+        }
+        return action.component
+      })
     default:
       return state;
   }

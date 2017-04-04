@@ -6,3 +6,10 @@ export const addComponent = (component) => {
     component
   };
 }
+
+export const selectComponent = (component) => {
+  return {
+    type: types.SELECT_COMPONENT,
+    component
+  };
+}

@@ -1,0 +1,7 @@
+.selected-component {
+  border: 2px solid red;
+}
+
+.item-container {
+  display: inline-block;
+}

@@ -27,7 +27,6 @@ Button.expectedProps = {
   },
   color: {
     type: 'radio',
-    operatesOn: 'className',
     options: [{
       label: 'primary',
       value: 'is-primary'

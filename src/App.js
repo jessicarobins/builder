@@ -6,7 +6,7 @@ import './App.css';
 import Sidebar from './sidebar/Sidebar';
 import Preview from './preview/Preview'
 
-import { getComponents } from './reducers/ComponentReducer'
+import { getComponents, getSelectedComponent } from './reducers/ComponentReducer'
 import * as componentActions from './actions/ComponentActions'
 
 class App extends Component {
@@ -17,7 +17,10 @@ class App extends Component {
           <Sidebar addComponent={this.props.actions.addComponent} />
         </div>
         <div className="column">
-          <Preview components={this.props.components} />
+          <Preview
+            selectComponent={this.props.actions.selectComponent}
+            selectedComponent={this.props.selectedComponent}
+            components={this.props.components} />
         </div>
       </div>
     );
@@ -26,7 +29,8 @@ class App extends Component {
 
 function mapStateToProps(state, props) {
   return {
-    components: getComponents(state)
+    components: getComponents(state),
+    selectedComponent: getSelectedComponent(state)
   };
 }
 

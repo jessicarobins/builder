@@ -68,7 +68,7 @@ class Sidebar extends Component {
         {
           this.fields(c, this.props.selectedComponent)
         }
-        <a className="button is-primary" type="submit">Update</a>
+        <button className="button is-primary" type="submit">Update</button>
       </form>
     )
   }

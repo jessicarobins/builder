@@ -16,6 +16,7 @@ class App extends Component {
         <div className="column is-one-quarter">
           <Sidebar
             selectedComponent={this.props.selectedComponent}
+            selectComponent={this.props.actions.selectComponent}
             addComponent={this.props.actions.addComponent}
             updateComponent={this.props.actions.updateComponent} />
         </div>

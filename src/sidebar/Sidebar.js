@@ -12,7 +12,7 @@ class Sidebar extends Component {
     }
   }
   
-  fields(c) {
+  fields(c, values) {
     return (
       _.map(c.expectedProps, (obj, key) => {
         return (
@@ -24,6 +24,7 @@ class Sidebar extends Component {
                   <input
                     type="text"
                     name={key}
+                    defaultValue={_.get(values, key)}
                     ref={key} />
                 </label>
               }
@@ -32,7 +33,11 @@ class Sidebar extends Component {
                 obj.options.map( o => {
                   return (
                     <label className="radio" key={o.value}>
-                      <input type="radio" name={key} value={o.value} />
+                      <input
+                        type="radio"
+                        name={key}
+                        value={o.value}
+                        defaultChecked={o.value === _.get(values, key)}/>
                       {o.label}
                     </label>
                   )
@@ -51,7 +56,7 @@ class Sidebar extends Component {
         {
           this.fields(this.state.selected)
         }
-        <button type="submit">Add</button>
+        <button className="button is-primary" type="submit">Add</button>
       </form>
     )
   }
@@ -61,9 +66,9 @@ class Sidebar extends Component {
     return (
       <form onSubmit={this.onUpdateComponentClick}>
         {
-          this.fields(c)
+          this.fields(c, this.props.selectedComponent)
         }
-        <button type="submit">Update</button>
+        <a className="button is-primary" type="submit">Update</a>
       </form>
     )
   }
@@ -79,6 +84,7 @@ class Sidebar extends Component {
   }
   
   setSelectedComponent(c) {
+    this.props.selectComponent(null)
     this.setState({selected: c})
   }
   
@@ -102,6 +108,7 @@ class Sidebar extends Component {
     this.props.addComponent(props)
     
     _.each(this.refs, r => r.value = '')
+    this.setState({selected: null})
   }
   
   onUpdateComponentClick = (e) => {
@@ -114,10 +121,14 @@ class Sidebar extends Component {
       return {[key]: elems[key].value}
     })
     
-    let props = {_id: this.props.selectedComponent._id, componentName: this.props.selectedComponent.componentName}
+    let props = {
+      _id: this.props.selectedComponent._id,
+      componentName: this.props.selectedComponent.componentName
+    }
     _.assign(props, ...refs)
     
     this.props.updateComponent(props)
+    this.setState({selected: null})
   }
   
   render() {

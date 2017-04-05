@@ -11,7 +11,12 @@ class Preview extends Component {
   }
   
   select(c) {
-    this.props.selectComponent(c)
+    if(this.isSelected(c)) {
+      this.props.selectComponent(null)
+    }
+    else {
+      this.props.selectComponent(c)
+    }
   }
   
   render() {

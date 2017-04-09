@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import cx from 'classnames'
 import * as _ from 'lodash'
 
+import Grid from '../grid/Grid'
 import * as components from '../components';
 import './Preview.css'
 
@@ -21,7 +22,7 @@ class Preview extends Component {
   
   render() {
     return (
-      <div>
+      <Grid>
         {
           this.props.components.map( (value) => {
             const Comp = components[value.componentName]
@@ -38,7 +39,7 @@ class Preview extends Component {
             )
           })
         }
-      </div>
+      </Grid>
     );
   }
 }

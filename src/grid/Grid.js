@@ -4,7 +4,7 @@ const gridStyles = {
   display: 'grid',
   gridTemplateColumns: '20% 20% 20% 20% 20%',
   gridTemplateRows: '20% 20% 20% 20% 20%',
-  height: '95vh',
+  minHeight: '95vh',
   border: '1px solid black'
 }
 

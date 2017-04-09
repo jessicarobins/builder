@@ -61,13 +61,12 @@ class Grid extends Component {
         onDrop={this.dropHandler}
         style={gridStyles}>
         {
-          React.Children.map(this.props.children, child => {
-            return (
-              <div draggable="true" onDragStart={this.dragstartHandler}>
-                {child}
-              </div>
-            )
-          })
+          React.Children.map(this.props.children,
+            (child) => React.cloneElement(child, {
+              draggable: true,
+              onDragStart: this.dragstartHandler
+            })
+          )
         }
       </div>
     );

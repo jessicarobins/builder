@@ -22,17 +22,20 @@ class Grid extends Component {
     e.preventDefault()
     const el = this.state.dragTarget
     
-    //get dimensions of grid element
-    const h = e.target.clientHeight
-    const w = e.target.clientWidth
-    
-    //find relative position of grid
-    const l = e.clientX - e.target.offsetLeft
-    const t = e.clientY - e.target.offsetTop
-    const { col, row } = this.doTheMath(l, t, w, h)
-    
-    el.style.gridColumn = `${col} / span 1`
-    el.style.gridRow = `${row} / span 1`
+    if (e.target !== this.state.dragTarget) {
+      //get dimensions of grid element
+      const h = e.target.clientHeight
+      const w = e.target.clientWidth
+      
+      
+      //find relative position of grid
+      const l = e.clientX - e.target.offsetLeft
+      const t = e.clientY - e.target.offsetTop
+      const { col, row } = this.doTheMath(l, t, w, h)
+      
+      el.style.gridColumn = `${col} / span 1`
+      el.style.gridRow = `${row} / span 1`
+    }
     this.setState({dragTarget: null})
   }
   

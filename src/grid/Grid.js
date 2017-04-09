@@ -4,8 +4,7 @@ const gridStyles = {
   display: 'grid',
   gridTemplateColumns: '20% 20% 20% 20% 20%',
   gridTemplateRows: '20% 20% 20% 20% 20%',
-  width: '50vw',
-  height: '100vh',
+  height: '95vh',
   border: '1px solid black'
 }
 
@@ -26,7 +25,6 @@ class Grid extends Component {
       //get dimensions of grid element
       const h = e.target.clientHeight
       const w = e.target.clientWidth
-      
       
       //find relative position of grid
       const l = e.clientX - e.target.offsetLeft

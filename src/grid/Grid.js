@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import update from 'immutability-helper';
+import * as _ from 'lodash';
 
 const gridStyles = {
   display: 'grid',
@@ -13,15 +15,17 @@ class Grid extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      dragTarget: null
+      dragTarget: null,
+      items: {}
     }
   }
   
   dropHandler = (e) => {
     e.preventDefault()
-    const el = this.state.dragTarget
     
-    if (e.target !== this.state.dragTarget) {
+    const { el, dragKey } = this.state.dragTarget
+    
+    if (e.target !== el) {
       //get dimensions of grid element
       const h = e.target.clientHeight
       const w = e.target.clientWidth
@@ -31,8 +35,16 @@ class Grid extends Component {
       const t = e.clientY - e.target.offsetTop
       const { col, row } = this.doTheMath(l, t, w, h)
       
-      el.style.gridColumn = `${col} / span 1`
-      el.style.gridRow = `${row} / span 1`
+      const style = {
+        gridColumn: `${col} / span 1`,
+        gridRow: `${row} / span 1`
+      }
+      
+      const items = update(this.state.items, {
+         [dragKey]: {$set: style}
+      });
+      
+      this.setState({items: items})
     }
     this.setState({dragTarget: null})
   }
@@ -42,8 +54,8 @@ class Grid extends Component {
     e.dataTransfer.dropEffect = "move"
   }
   
-  dragstartHandler = (e) => {
-    this.setState({dragTarget: e.target})
+  dragstartHandler = (e, key) => {
+    this.setState({dragTarget: {el: e.target, dragKey: key}})
   }
   
   doTheMath(x, y, w, h) {
@@ -62,7 +74,8 @@ class Grid extends Component {
           React.Children.map(this.props.children,
             (child) => React.cloneElement(child, {
               draggable: true,
-              onDragStart: this.dragstartHandler
+              onDragStart: (e) => this.dragstartHandler(e, child.key),
+              style: _.get(this.state.items, child.key)
             })
           )
         }

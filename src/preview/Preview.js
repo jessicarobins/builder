@@ -22,7 +22,7 @@ class Preview extends Component {
   
   render() {
     return (
-      <Grid>
+      <Grid selectedComponent={this.props.selectedComponent}>
         {
           this.props.components.map( (value) => {
             const Comp = components[value.componentName]
